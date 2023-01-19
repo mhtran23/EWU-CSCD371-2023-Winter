@@ -54,7 +54,7 @@ namespace PrincessBrideTrivia
 
         public static void DisplayQuestion(Question question)
         {
-            Console.WriteLine("Question: " + question.Text);
+            Console.WriteLine("Question: " + question.Text); //System.NullReferenceException thrown here
             for (int i = 0; i < question.Answers.Length; i++)
             {
                 Console.WriteLine((i + 1) + ": " + question.Answers[i]);
@@ -89,6 +89,7 @@ namespace PrincessBrideTrivia
                 question.Answers[1] = answer2;
                 question.Answers[2] = answer3;
                 question.CorrectAnswerIndex = correctAnswerIndex;
+                questions[i] = question; //added to resolve NullReferenceException
             }
             return questions;
         }
