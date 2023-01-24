@@ -12,7 +12,7 @@ namespace Logger
         {
             if(!string.IsNullOrEmpty(_FilePath))
             {
-                File.AppendAllText(_FilePath, $"{DateTime.Now}{ClassName}{logLevel + ":"} {message}");
+                File.AppendAllText(_FilePath, $"{DateTime.Now}{ClassName}{logLevel + ":"} {message}\n");
 
             }
             else
