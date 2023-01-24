@@ -36,7 +36,7 @@ public class FileLoggerTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void EmptyFilePath_FileLogger_ThrowsException()
+        public void EmptyFilePath_FileLogger_ThrowsExceptioned()
         {
             // Arrange
             FileLogger testLogger = new FileLogger("");
