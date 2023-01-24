@@ -1,8 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 
-namespace Logger.Tests
+namespace Logger.Tests;
+
+[TestClass]
+public class LogFactoryTests
 {
+<<<<<<< HEAD
     [TestClass]
     public class LogFactoryTests
     {
@@ -21,4 +25,7 @@ namespace Logger.Tests
             Assert.IsNotNull(logger);
         }
     }
+=======
+    
+>>>>>>> e40066f1c4e1fe778e4b84b608e48790f5ed12e6
 }

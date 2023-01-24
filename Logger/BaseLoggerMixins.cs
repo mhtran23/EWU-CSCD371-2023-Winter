@@ -1,6 +1,6 @@
 ﻿using System;
-namespace Logger
-{
+namespace Logger;
+
     public static class BaseLoggerMixins
     {
         public static void Error(this BaseLogger baseLogger, string message, params object[] args) 
@@ -25,4 +25,4 @@ namespace Logger
         }
 
     }
-}
+

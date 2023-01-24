@@ -2,17 +2,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace Logger.Tests
-{
-    [TestClass]
-    public class BaseLoggerMixinsTests
-    {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Error_WithNullLogger_ThrowsException()
-        {
-            // Arrange
+namespace Logger.Tests;
 
+[TestClass]
+public class BaseLoggerMixinsTests
+{
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void Error_WithNullLogger_ThrowsException()
+    {
+        // Arrange
+
+<<<<<<< HEAD
             // Act
             BaseLoggerMixins.Error(null, "");
 
@@ -84,16 +85,37 @@ namespace Logger.Tests
 
         }
 
+=======
+        // Act
+        //BaseLoggerMixins.Error(null, "");
+>>>>>>> e40066f1c4e1fe778e4b84b608e48790f5ed12e6
 
+        // Assert
     }
 
-    public class TestLogger : BaseLogger
+    [TestMethod]
+    public void Error_WithData_LogsMessage()
     {
-        public List<(LogLevel LogLevel, string Message)> LoggedMessages { get; } = new List<(LogLevel, string)>();
+        // Arrange
+        var logger = new TestLogger();
 
-        public override void Log(LogLevel logLevel, string message)
-        {
-            LoggedMessages.Add((logLevel, message));
-        }
+        // Act
+        //logger.Error("Message {0}", 42);
+
+        // Assert
+        Assert.AreEqual(1, logger.LoggedMessages.Count);
+        Assert.AreEqual(LogLevel.Error, logger.LoggedMessages[0].LogLevel);
+        Assert.AreEqual("Message 42", logger.LoggedMessages[0].Message);
+    }
+
+}
+
+public class TestLogger : BaseLogger
+{
+    public List<(LogLevel LogLevel, string Message)> LoggedMessages { get; } = new List<(LogLevel, string)>();
+
+    public override void Log(LogLevel logLevel, string message)
+    {
+        LoggedMessages.Add((logLevel, message));
     }
 }

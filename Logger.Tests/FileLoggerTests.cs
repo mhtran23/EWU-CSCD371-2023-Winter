@@ -2,8 +2,12 @@
 using System;
 using System.IO;
 
-namespace Logger.Tests
+namespace Logger.Tests;
+
+[TestClass]
+public class FileLoggerTests
 {
+<<<<<<< HEAD
     [TestClass]
     public class FileLoggerTests
     {
@@ -27,4 +31,7 @@ namespace Logger.Tests
             File.Delete(filePath);
         }
     }
+=======
+    
+>>>>>>> e40066f1c4e1fe778e4b84b608e48790f5ed12e6
 }
