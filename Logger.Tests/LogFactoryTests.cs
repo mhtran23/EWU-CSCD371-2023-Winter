@@ -6,10 +6,8 @@ namespace Logger.Tests;
 [TestClass]
 public class LogFactoryTests
 {
-<<<<<<< HEAD
-    [TestClass]
-    public class LogFactoryTests
-    {
+    
+   
         [TestMethod]
         public void CreateLogger_NullLogger()
         {
@@ -24,8 +22,5 @@ public class LogFactoryTests
             var logger = logFactory.CreateLogger("BaseLogger");
             Assert.IsNotNull(logger);
         }
-    }
-=======
     
->>>>>>> e40066f1c4e1fe778e4b84b608e48790f5ed12e6
 }

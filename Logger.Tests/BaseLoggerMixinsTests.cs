@@ -13,7 +13,6 @@ public class BaseLoggerMixinsTests
     {
         // Arrange
 
-<<<<<<< HEAD
             // Act
             BaseLoggerMixins.Error(null, "");
 
@@ -85,10 +84,7 @@ public class BaseLoggerMixinsTests
 
         }
 
-=======
-        // Act
-        //BaseLoggerMixins.Error(null, "");
->>>>>>> e40066f1c4e1fe778e4b84b608e48790f5ed12e6
+
 
         // Assert
     }
