@@ -1,40 +1,67 @@
+
 using System;
+using System.IO;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 
 namespace Logger.Tests;
 
 [TestClass]
 public class FileLoggerTests
 {
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void EmptyFilePath_FileLogger_ThrowsException()
+
+    [TestClass]
+    public class FileLoggerTests
     {
-        // Arrange
-        FileLogger testLogger = new FileLogger("");
 
-        // Act
-        testLogger.Log(LogLevel.Error, "This is an Error");
+        [TestMethod]
+        public void FileLogger_LoggingLines()
+        {
+            // Arrange
+            string filePath = "C:\\Users\\Public\\Documents\\message.txt";
+            var logger = new FileLogger(filePath) {ClassName = nameof(FileLoggerTests)};
 
-        // Assert
+            // Act
+            logger.Log(LogLevel.Error, "Error");
+            logger.Log(LogLevel.Warning, "Warning");
+            logger.Log(LogLevel.Information, "Logging Info");
+            logger.Log(LogLevel.Debug, "Debugging!");
+
+            // Assert
+            string[] content = File.ReadAllLines(filePath);
+            Assert.AreEqual(4, content.Length);
+            File.Delete(filePath);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void EmptyFilePath_FileLogger_ThrowsException()
+        {
+            // Arrange
+            FileLogger testLogger = new FileLogger("");
+
+            // Act
+            testLogger.Log(LogLevel.Error, "This is an Error");
+
+            // Assert
 
 
+        }
+
+        [TestMethod]
+        public void Success_FileLogger_LogsError()
+        {
+            // Arrange
+            var testLogger = new FileLogger("file.txt");
+
+            // Act
+            testLogger.Log(LogLevel.Error, "This is an Error");
+
+            // Assert
+
+
+        }
     }
 
-    [TestMethod]
-    public void Success_FileLogger_LogsError()
-    {
-        // Arrange
-        var testLogger = new FileLogger("file.txt");
-
-        // Act
-        testLogger.Log(LogLevel.Error, "This is an Error");
-
-        // Assert
-
-
-    }
-
-    
 }
