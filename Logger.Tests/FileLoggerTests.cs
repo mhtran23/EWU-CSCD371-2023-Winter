@@ -15,8 +15,8 @@ public class FileLoggerTests
         public void FileLogger_LoggingLines()
         {
             // Arrange
-            string filePath = "C:\\Users\\Public\\Documents\\message.txt";
-            var logger = new FileLogger(filePath) {ClassName = nameof(FileLoggerTests)};
+            string filePath = Path.GetTempFileName();
+        var logger = new FileLogger(filePath) {ClassName = nameof(FileLoggerTests)};
 
             // Act
             logger.Log(LogLevel.Error, "Error");
