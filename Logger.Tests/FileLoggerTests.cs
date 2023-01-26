@@ -16,7 +16,7 @@ public class FileLoggerTests
         {
             // Arrange
             string filePath = Path.GetTempFileName();
-        var logger = new FileLogger(filePath) {ClassName = nameof(FileLoggerTests)};
+            var logger = new FileLogger(filePath) {ClassName = nameof(FileLoggerTests)};
 
             // Act
             logger.Log(LogLevel.Error, "Error");
