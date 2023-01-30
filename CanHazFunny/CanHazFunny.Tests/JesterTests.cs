@@ -10,6 +10,7 @@ namespace CanHazFunny.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void JesterConstructor_GivenNullIJokeDisplay_ThrowNullException()
         {
+            #nullable enable
             IJokeDisplay? jokeDisplay = null;
             new Jester(jokeDisplay, new JokeService());
         }
@@ -18,6 +19,7 @@ namespace CanHazFunny.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void JesterConstructor_GivenNullIJokeService_ThrowsNullException()
         {
+            #nullable enable
             IJokeService? jokeService= null;
             new Jester(new DisplayOutput(), jokeService);
         }
