@@ -48,5 +48,16 @@ namespace CanHazFunny.Tests
             Assert.IsFalse(output.ToString().ToLower().Contains("chuck norris"));
            
         }
+
+        [TestMethod]
+        public void DisplayOutput_OutputisString()
+        {
+            var output = new Mock<IJokeDisplay>();
+            output.Setup(x => x.Display(It.IsAny<string>()));
+
+            Jester jokes = new(output.Object, new JokeService());
+            jokes.TellJoke();
+            output.Verify(x => x.Display(It.IsAny<string>()), Times.Once);
+        }
     }
 }
