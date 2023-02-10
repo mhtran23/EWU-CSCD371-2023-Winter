@@ -3,7 +3,7 @@
 namespace Logger.Tests
 {
     [TestClass]
-    public class RecordsEntityTest
+    public class BaseEntityTest
     {
         [TestMethod]
         public void Students_SameProperties_AreEqual()
