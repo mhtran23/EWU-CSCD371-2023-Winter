@@ -17,8 +17,7 @@ namespace Logger.Tests
                 Author = author,
                 ISBN = "9780340951453"
             };
-            
-  
+
             storageOne.Add(bookOne);
             Assert.IsTrue(storageOne.Contains(bookOne));
         }
@@ -31,6 +30,7 @@ namespace Logger.Tests
             {
                 Id = Guid.NewGuid(),
                 FullName = new FullName("Kensuke", "Aida"),
+
                 StudentID = 010           
             };
 
@@ -54,7 +54,9 @@ namespace Logger.Tests
         }
 
         [TestMethod]
+
         public void Remove_Student_Entity() { 
+
             Storage storageOne = new();
             Student studentTwo = new()
             {
@@ -68,4 +70,6 @@ namespace Logger.Tests
             Assert.IsFalse(storageOne.Contains(studentTwo));
         }
     }
+
 }
+

@@ -1,5 +1,6 @@
 ﻿namespace Logger
 {   //All the records are implemented implicitly so it wouldn't conflict with values with the same class
+
     public record class Book : IEntity
     {
         public Guid Id { get; init; }
@@ -11,10 +12,12 @@
 
     }
 
+
     public record class Student : Person
     {
         public int StudentID;
     }
+
 
     public record class Employee : Person
     {
