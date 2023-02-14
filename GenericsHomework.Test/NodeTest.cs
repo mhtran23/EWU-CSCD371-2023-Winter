@@ -58,7 +58,7 @@ public class NodeTests
     {
         _ = Assert.ThrowsException<ArgumentException>(() =>
         {
-            Node<double> newNode = DoubleRadioStations();
+            Node<double> newNode = DoubleNodes();
             newNode.Append(13);
         });
     }
@@ -67,7 +67,7 @@ public class NodeTests
     [TestMethod]
     public void NodeClear_RemovesAllNodesNotLast()
     {
-        Node<double> newNode = DoubleRadioStations();
+        Node<double> newNode = DoubleNodes();
         Assert.IsTrue(newNode.Exists(13));
         Assert.IsTrue(newNode.Exists(88));
         Assert.IsTrue(newNode.Exists(99));
@@ -82,7 +82,7 @@ public class NodeTests
         Assert.IsFalse(newNode.Exists(108));
     }
 
-    public static Node<double> DoubleRadioStations()
+    public static Node<double> DoubleNodes()
     {
         Node<double> newNode = new(13);
         newNode.Append(88);
