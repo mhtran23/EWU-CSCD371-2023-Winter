@@ -25,7 +25,7 @@
             bool keyValueExists = Exists(value);
             if (keyValueExists == true)
             {
-                throw new ArgumentException("Cannot add duplicate value");
+                throw new ArgumentException("Can not add duplicate values");
             }
             Node<TValues> lastNode = GetLast();
             lastNode.Next = new Node<TValues>(value, Last);
@@ -42,6 +42,9 @@
         }
         public void Clear()
         {
+            //The garbage collector picks up objects once they are no longer referenced.
+            //Thus removing the next node would delete it and the node it was pointing to.
+            //and the current node is only pointing to itself.
 
             Last.Next = this;
         }

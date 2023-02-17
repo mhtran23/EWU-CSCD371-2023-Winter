@@ -20,11 +20,14 @@ public class NodeTests
     [TestMethod]
     public void NodeIsLast_True()
     {
-        Node<string> newNode = new("one");
-        Assert.IsTrue(newNode.Equals(newNode.Last));
+        Node<string> nodeOne = new("one");
+        Assert.IsTrue(nodeOne.Equals(nodeOne.Last));
 
-        Node<string> newNode2 = new("two", newNode);
-        Assert.IsTrue(newNode2.Equals(newNode2.Last));
+        Node<string> nodeTwo= new("two", nodeOne);
+        Assert.IsTrue(nodeTwo.Equals(nodeTwo.Last));
+
+        Node<string> nodeThree = new("three", nodeTwo);
+        Assert.IsTrue(nodeThree.Equals(nodeThree.Last));
     }
 
     [TestMethod]
@@ -61,6 +64,25 @@ public class NodeTests
             Node<double> newNode = DoubleNodes();
             newNode.Append(13);
         });
+    }
+
+    [TestMethod]
+    public void NodeAppend_True()
+    {
+        Node<string> newNode = new("one");
+        newNode.Append("two");
+        Assert.IsTrue(newNode.Exists("two"));
+    }
+
+    [TestMethod]
+    public void NodeLast_IsLast()
+    {
+        Node<string> newNode = new("one");
+        newNode.Append("two");
+        newNode.Append("three");
+        Node<string> lastNode = newNode.GetLast();
+        Assert.AreEqual<string>("three", lastNode.ToString()!);
+        Assert.AreEqual<string>(newNode.ToString()!, lastNode.Next.ToString()!);
     }
 
 
