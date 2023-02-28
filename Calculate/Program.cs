@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Calculate
 {
     public class Program
     {
         public Action<string> WriteLine { get; init; } = Console.WriteLine;
-        public Func<string?> ReadLine { get; init;} = Console.ReadLine;
+        public Func<string?> ReadLine { get; init; } = Console.ReadLine;
 
         public Program() { }
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
             Program progarm = new();
-            Calculator cal = new();
+            Calculator calculate = new();
             int result;
             bool correctInput = true;
 
@@ -23,18 +24,18 @@ namespace Calculate
             {
                 progarm.WriteLine("Enter an equation with spaces inbetween the operands and operator(ex: '5 + 3'): ");
                 string? userInput = progarm.ReadLine.Invoke();
-                correctInput = cal.TryCalculate(userInput, out result);
+                correctInput = Calculator.TryCalculate(userInput, out result);
 
                 if (correctInput)
                 {
-                  progarm.WriteLine(result.ToString());
+                    progarm.WriteLine(result.ToString());
                 }
                 else
                 {
                     progarm.WriteLine.Invoke("Invalid input");
                 }
             }
-        
+
         }
 
     }

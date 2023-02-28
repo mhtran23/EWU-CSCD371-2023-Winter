@@ -32,7 +32,8 @@ namespace Calculate
         public static bool TryCalculate(string calculation, out int result)
         {
             result = 0;
-            int operand1, operand2;
+            int operand1;
+            int operand2;
             char operator1;
 
             string[] input = calculation.Split(' ');
