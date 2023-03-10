@@ -19,7 +19,7 @@ namespace Assignment
 
         // 3.
         public string GetAggregateSortedListOfStatesUsingCsvRows()
-        {   string[] state = GetUniqueSortedListOfStatesGivenCsvRows().Select(x => x).ToArray(); 
+        {   string[] state = GetUniqueSortedListOfStatesGivenCsvRows().ToArray(); 
             return string.Join(",", state);
         }
 

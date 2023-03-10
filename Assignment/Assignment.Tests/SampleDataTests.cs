@@ -11,19 +11,19 @@ namespace Assignment.Tests
     public class SampleDataTests
     {
 
-        SampleData data = new SampleData();
+        private readonly SampleData data = new SampleData();
 
         [TestMethod]
-        public void CsvRows_NotNull()
+        public void CsvRows_ReturnNotNull()
         {
             Assert.IsNotNull(data.CsvRows);
         }
 
         [TestMethod]
-        public void Csv_SkipFirstRow()
+        public void CsvRows_SkipFirstRow_ReturnCount()
         {
             IEnumerable<string> row = data.CsvRows;
-            Assert.AreEqual(50, row.Count());
+            Assert.AreEqual<int>(50, row.Count());
         }
 
         [TestMethod]
@@ -40,9 +40,9 @@ namespace Assignment.Tests
         [TestMethod]
         public void GetAggregateSortedListOfStatesUsingCsvRows_ToStringSuccess()
         {
-            string tempString = "AL,AZ,CA,DC,FL,GA,IN,KS,LA,MD,MN,MO,MT,NC,NE,NH,NV,NY,OR,PA,SC,TN,TX,UT,VA,WA,WV";
-            string actualString = data.GetAggregateSortedListOfStatesUsingCsvRows();
-            Assert.IsTrue(tempString.Equals(actualString));
+            string expected = "AL,AZ,CA,DC,FL,GA,IN,KS,LA,MD,MN,MO,MT,NC,NE,NH,NV,NY,OR,PA,SC,TN,TX,UT,VA,WA,WV";
+            string actual = data.GetAggregateSortedListOfStatesUsingCsvRows();
+            Assert.IsTrue(expected.Equals(actual));
         }
 
         [TestMethod]
@@ -55,6 +55,34 @@ namespace Assignment.Tests
         public void CreatePeople_NotNull()
         {
             Assert.IsNotNull(data.People);
+        }
+
+        [TestMethod]
+        public void CreatedAddressObject_NotNull()
+        {
+            Assert.IsNotNull(data.People.First().Address);
+        }
+
+        [TestMethod]
+        public void PeopleObject_EqualTo_CsvRowsSorted_IsTrue()
+        {
+            IEnumerable<string> peopleData = data.People
+                .Select(attribute => $"{attribute.FirstName},{attribute.LastName},{attribute.EmailAddress},{attribute.Address.StreetAddress}" +
+                $",{attribute.Address.City},{attribute.Address.State},{attribute.Address.Zip}");
+
+            IEnumerable<string> sortedList = data.CsvRows.Select(line => line.Split(','))
+                .Select(attributes => new {
+                    FirstName = attributes[1],
+                    LastName = attributes[2],
+                    Email = attributes[3],
+                    StreetAddress = attributes[4],
+                    City = attributes[5],
+                    State = attributes[6],
+                    ZipCode = attributes[7],
+                }).OrderBy(item => item.State).ThenBy(item => item.City).ThenBy(item => item.ZipCode)
+                .Select(items => $"{items.FirstName},{items.LastName},{items.Email},{items.StreetAddress}" +
+                $",{items.City},{items.State},{items.ZipCode}");
+            Assert.IsTrue(peopleData.SequenceEqual(sortedList));
         }
 
         [TestMethod]
