@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Assignment.Tests;
@@ -16,6 +17,16 @@ public class PingProcessTests
     public void TestInitialize()
     {
         Sut = new();
+    }
+
+    [TestMethod]
+    public void StringBuilderAppendLine_InParallel_IsNotThreadSafe()
+    {
+        IEnumerable<int> numbers = Enumerable.Range(0, short.MaxValue);
+        System.Text.StringBuilder stringBuilder = new();
+        numbers.AsParallel().ForAll(item => stringBuilder.AppendLine(""));
+        int lineCount = stringBuilder.ToString().Split(Environment.NewLine).Length;
+        Assert.AreNotEqual(lineCount, numbers.Count() + 1);
     }
 
     [TestMethod]
@@ -57,76 +68,72 @@ public class PingProcessTests
     [TestMethod]
     public void RunTaskAsync_Success()
     {
-        // Do NOT use async/await in this test.
-        // Test Sut.RunTaskAsync("localhost");
+        Task<PingResult> task = Sut.RunTaskAsync("localhost");
+        AssertValidPingOutput(task.Result);
     }
 
     [TestMethod]
     public void RunAsync_UsingTaskReturn_Success()
     {
-        // Do NOT use async/await in this test.
-        PingResult result = default;
-        // Test Sut.RunAsync("localhost");
-        AssertValidPingOutput(result);
+        Task<PingResult> task = Sut.RunAsync("localhost");
+        AssertValidPingOutput(task.Result);
     }
 
     [TestMethod]
-#pragma warning disable CS1998 // Remove this
     async public Task RunAsync_UsingTpl_Success()
     {
-        // DO use async/await in this test.
-        PingResult result = default;
-
-        // Test Sut.RunAsync("localhost");
+        PingResult result = await Sut.RunAsync("localhost");
         AssertValidPingOutput(result);
     }
-#pragma warning restore CS1998 // Remove this
 
 
     [TestMethod]
     [ExpectedException(typeof(AggregateException))]
     public void RunAsync_UsingTplWithCancellation_CatchAggregateExceptionWrapping()
     {
-        
+        CancellationTokenSource cancellationTokenSource = new();
+        Task<PingResult> task = Sut.RunAsync("localhost", cancellationTokenSource.Token);
+        cancellationTokenSource.Cancel();
+        task.Wait();
     }
 
     [TestMethod]
     [ExpectedException(typeof(TaskCanceledException))]
     public void RunAsync_UsingTplWithCancellation_CatchAggregateExceptionWrappingTaskCanceledException()
     {
-        // Use exception.Flatten()
+        try
+        {
+            CancellationTokenSource cancellationTokenSource = new();
+            Task<PingResult> task = Sut.RunAsync("localhost", cancellationTokenSource.Token);
+            cancellationTokenSource.Cancel();
+            task.Wait();
+        }
+        catch (AggregateException exception)
+        {
+            throw exception.Flatten().InnerException!;
+        }
     }
 
     [TestMethod]
     async public Task RunAsync_MultipleHostAddresses_True()
     {
-        // Pseudo Code - don't trust it!!!
         string[] hostNames = new string[] { "localhost", "localhost", "localhost", "localhost" };
-        int expectedLineCount = PingOutputLikeExpression.Split(Environment.NewLine).Length*hostNames.Length;
+        int expectedLineCount = PingOutputLikeExpression.Split(Environment.NewLine).Length * hostNames.Length;
         PingResult result = await Sut.RunAsync(hostNames);
         int? lineCount = result.StdOutput?.Split(Environment.NewLine).Length;
         Assert.AreEqual(expectedLineCount, lineCount);
     }
 
     [TestMethod]
-#pragma warning disable CS1998 // Remove this
+
     async public Task RunLongRunningAsync_UsingTpl_Success()
     {
-        PingResult result = default;
-        // Test Sut.RunLongRunningAsync("localhost");
+        ProcessStartInfo processStartInfo = new ProcessStartInfo();
+        processStartInfo.Arguments = "localhost";
+        PingResult result = await Sut.RunLongRunningAsync(processStartInfo, default, default, default);
         AssertValidPingOutput(result);
     }
-#pragma warning restore CS1998 // Remove this
 
-    [TestMethod]
-    public void StringBuilderAppendLine_InParallel_IsNotThreadSafe()
-    {
-        IEnumerable<int> numbers = Enumerable.Range(0, short.MaxValue);
-        System.Text.StringBuilder stringBuilder = new();
-        numbers.AsParallel().ForAll(item => stringBuilder.AppendLine(""));
-        int lineCount = stringBuilder.ToString().Split(Environment.NewLine).Length;
-        Assert.AreNotEqual(lineCount, numbers.Count()+1);
-    }
 
     readonly string PingOutputLikeExpression = @"
 Pinging * with 32 bytes of data:
@@ -143,7 +150,7 @@ Approximate round trip times in milli-seconds:
     {
         Assert.IsFalse(string.IsNullOrWhiteSpace(stdOutput));
         stdOutput = WildcardPattern.NormalizeLineEndings(stdOutput!.Trim());
-        Assert.IsTrue(stdOutput?.IsLike(PingOutputLikeExpression)??false,
+        Assert.IsTrue(stdOutput?.IsLike(PingOutputLikeExpression) ?? false,
             $"Output is unexpected: {stdOutput}");
         Assert.AreEqual<int>(0, exitCode);
     }
